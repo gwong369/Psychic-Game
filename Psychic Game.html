@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Psychic Game</title>
+</head>
+
+<body>
+    <h1>The Psychic Game</h1>
+    <p>Guess what letter I'm thinking of.</p>
+  <div id="game">
+
+  </div>
+
+  <script type="text/javascript">
+
+    // Creates an array that lists out all of the options (every letter of the alphabet).
+    var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var win = 0;
+    var lost = 0;
+    var guessesLeft = 12;
+    var guesses = 0;
+
+    // This function is run whenever the user presses a key.
+    document.onkeyup = function(event) {
+
+      // Determines which key was pressed.
+        var userGuess = event.key;
+
+      // Randomly chooses a choice from the options array. This is the Computer's guess.
+        var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+        if ((userGuess === computerGuess)) {
+            win++; 
+            guessesLeft = 12; 
+            guesses = 0;
+
+        } else if (userGuess !== computerGuess) {
+            guessesLeft--; 
+            guesses++;
+        }
+
+        if ((guessesLeft === 0)) {
+            lost++; 
+            guessesLeft = 12;
+            guesses = 0;
+        }
+
+
+        var html = 
+            "<p>Your guess: " + userGuess + "</p>" +
+            "<p>Computer guess: " + computerGuess + "</p>" +
+            "<p>Win: " + win + "</p>" +
+            "<p>Lost: " + lost + "</p>" +
+            "<p>Guesses Left: " + guessesLeft + "</p>" +
+            "<p>Guesses: " + guesses + "</p>";
+
+
+        document.querySelector("#game").innerHTML = html;
+    }
+    
+    // if (win = 1) {
+    //         alert("You win!")
+    //         var userGuess = event.key;
+    //         HTMLFormElement.reset("html")
+    //     } else if (guessesLeft = 0) {
+    //         alert("You lose!")
+    //         var userGuess = event.key;
+    //         HTMLFormElement.reset("html")
+    //     }
+
+        // Make a reset function
+  </script>
+
+</body>
+
+</html>
