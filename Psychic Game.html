@@ -9,9 +9,10 @@
 <body>
     <h1>The Psychic Game</h1>
     <p>Guess what letter I'm thinking of.</p>
-  <div id="game">
-
-  </div>
+    <p>Wins: <span id="win"></span></p>
+    <p>Losses: <span id="lost"></span></p>
+    <p>Guesses left: <span id="guessesLeft"></span></p>
+    <p>Your guesses so far: <span id="guesses"></span></p>
 
   <script type="text/javascript">
 
@@ -19,8 +20,9 @@
     var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
     var win = 0;
     var lost = 0;
-    var guessesLeft = 12;
-    var guesses = 0;
+    var guessesLeft = 9;
+    var guesses = [];
+    var computerGuess;
 
     // This function is run whenever the user presses a key.
     document.onkeyup = function(event) {
@@ -28,49 +30,53 @@
       // Determines which key was pressed.
         var userGuess = event.key;
 
-      // Randomly chooses a choice from the options array. This is the Computer's guess.
-        var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-
         if ((userGuess === computerGuess)) {
             win++; 
-            guessesLeft = 12; 
-            guesses = 0;
+            guessesLeft = 9; 
+            computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+            guesses = [];
 
-        } else if (userGuess !== computerGuess) {
-            guessesLeft--; 
-            guesses++;
+        } else { 
+            if (!isDuplicate(userGuess, guesses)) {
+                console.log("is not dup: " + !isDuplicate(userGuess, guesses));
+                guessesLeft--;
+                if (guessesLeft === 8) {
+                    guesses.push(userGuess);
+                } else {
+                    guesses.push(userGuess);
+                    guesses.innerHTML = guesses.join(', ');
+                }
+            }
+            
         }
 
         if ((guessesLeft === 0)) {
             lost++; 
-            guessesLeft = 12;
-            guesses = 0;
+            guessesLeft = 9;
+            computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+            guesses = [];
         }
 
+        document.querySelector("#win").innerHTML = win;
 
-        var html = 
-            "<p>Your guess: " + userGuess + "</p>" +
-            "<p>Computer guess: " + computerGuess + "</p>" +
-            "<p>Win: " + win + "</p>" +
-            "<p>Lost: " + lost + "</p>" +
-            "<p>Guesses Left: " + guessesLeft + "</p>" +
-            "<p>Guesses: " + guesses + "</p>";
+        document.querySelector("#lost").innerHTML = lost;
 
+        document.querySelector("#guessesLeft").innerHTML = guessesLeft;
 
-        document.querySelector("#game").innerHTML = html;
+        document.querySelector("#guesses").innerHTML = guesses;
     }
-    
-    // if (win = 1) {
-    //         alert("You win!")
-    //         var userGuess = event.key;
-    //         HTMLFormElement.reset("html")
-    //     } else if (guessesLeft = 0) {
-    //         alert("You lose!")
-    //         var userGuess = event.key;
-    //         HTMLFormElement.reset("html")
-    //     }
 
-        // Make a reset function
+    var isDuplicate = function(userGuess, guesses) {
+        for (var i = 0; i < guesses.length; i++){
+            // console.log('user guess: ' + userGuess + ' guesses: ' + guesses);
+            // console.log('user guess: ' + userGuess + ' guess: ' + guesses[i]);
+            // console.log('match? ' + (userGuess === guesses[i]));
+            if (userGuess === guesses[i]) {
+                return true;
+            }
+        }
+    }
+
   </script>
 
 </body>
